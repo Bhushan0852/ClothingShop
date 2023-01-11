@@ -1,6 +1,6 @@
 ﻿namespace ClothingShop.API.Models.User
 {
-    public class UserLocations
+    public class UserLocations : AuditEntity
     {
         public Guid Id { get; set; }
         public string AddressLane1 { get; set; }
