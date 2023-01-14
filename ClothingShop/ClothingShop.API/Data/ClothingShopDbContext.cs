@@ -1,4 +1,4 @@
-﻿using ClothingShop.API.Models.User;
+﻿using ClothingShop.API.Models.Domains;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClothingShop.API.Data

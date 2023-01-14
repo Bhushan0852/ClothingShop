@@ -1,6 +1,6 @@
-﻿namespace ClothingShop.API.Models.User
+﻿namespace ClothingShop.API.Models.DTOs.User
 {
-    public class UserRole : AuditEntity
+    public class UserRoleDTO 
     {
         public Guid Id { get; set; }
         public string Role { get; set; }

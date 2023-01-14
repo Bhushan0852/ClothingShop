@@ -1,18 +1,18 @@
-﻿namespace ClothingShop.API.Models.User
+﻿namespace ClothingShop.API.Models.DTOs.User
 {
-    public class UserLocations : AuditEntity
+    public class CreateUserLocationsDTO 
     {
-        public Guid Id { get; set; }
+        //public Guid Id { get; set; }
         public string AddressLane1 { get; set; }
         public string AddressLane2 { get; set; }
         public string AddressLane3 { get; set; }
         public string PinCode { get; set; }
         public string State { get; set; }
         public string City { get; set; }
-        public bool IsPrimary { get; set; }
+        //public bool IsPrimary { get; set; }
 
         //Nevigation Prop
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        //public UserDTO User { get; set; }
     }
 }
