@@ -1,4 +1,5 @@
 ﻿using ClothingShop.API.Data;
+using ClothingShop.API.Models.DTOs.User;
 using ClothingShop.API.Repository.IEFRepository.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,8 +55,19 @@ namespace ClothingShop.API.Repository.Repository.User
 
         public async Task<IEnumerable<Models.Domains.User>> GetAllAsnyc()
         {
-            var data = dbContext.Users.Include(x => x.UserRole).Include(x => x.UserLocations).ToList();
+            var data = dbContext.Users.Where(x => !x.IsDeleted)
+                .Include(x => x.UserRole)
+                .Include(x => x.UserLocations).Where(x => !x.IsDeleted).ToList();
+            
+
             return data;
+        }
+
+        public async Task<Models.Domains.User> GetUserLocationByUserAsync(Guid guid)
+        {
+            return dbContext.Users
+                .Include(x => x.UserRole)
+                .Include(x => x.UserLocations).FirstOrDefault(c => c.Id == guid);
         }
 
         public async Task<Models.Domains.UserLocations> CreateLocationAsync(Models.DTOs.User.CreateUserLocationsDTO userLocationsDTO)
@@ -81,6 +93,107 @@ namespace ClothingShop.API.Repository.Repository.User
                 return new Models.Domains.UserLocations();
             }
             return data.Entity;
+        }
+
+        public async Task<Models.Domains.UserLocations> UpdateUserLocationAsync(Models.DTOs.User.UpdateUserLocationDTO userLocationDTO)
+        {
+            int count = 0;
+            var userLocations = await dbContext.UserLocations.FirstOrDefaultAsync(x => x.Id == userLocationDTO.Id);
+            if(userLocations != null)
+            {
+                userLocations.AddressLane1 = userLocationDTO.AddressLane1;  
+                userLocations.AddressLane2 = userLocationDTO.AddressLane2;  
+                userLocations.AddressLane3 = userLocationDTO.AddressLane3;  
+                userLocations.PinCode = userLocationDTO.PinCode;  
+                userLocations.City = userLocationDTO.City;  
+                userLocations.State = userLocationDTO.State;
+                userLocations.IsPrimary = userLocationDTO.IsPrimary;
+                dbContext.Update(userLocations);
+               count = await dbContext.SaveChangesAsync();
+            }
+            if(count > 0)
+            {
+                return userLocations;
+            }
+            return userLocations;
+        }
+
+        public async Task<bool> DeleteUserAsync(Guid guid)
+        {
+            var user = await dbContext.Users
+                .Include(c => c.UserLocations)
+                .FirstOrDefaultAsync(c => c.Id == guid);
+            try
+            {
+                if (user != null)
+                {
+                    user.IsDeleted = true;
+                    user.UpdatedBy = "Test";
+                    user.UpdatedByTimeStamp = DateTime.Now.ToString();
+                    dbContext.Update(user);
+                    await dbContext.SaveChangesAsync();
+
+                    foreach (var userLocation in user.UserLocations.ToList())
+                    {
+                        userLocation.IsDeleted = true;
+                        userLocation.UpdatedBy = "Test";
+                        userLocation.UpdatedByTimeStamp = DateTime.Now.ToString();
+                        dbContext.Update(userLocation);
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+            return true;    
+        }
+
+        public async Task<bool> DeleteUserLoacationAsync(Guid guid)
+        {
+            var userLocation = await dbContext.UserLocations.FirstOrDefaultAsync(c => c.Id == guid);
+
+            try
+            {
+                if (userLocation.Id != Guid.NewGuid())
+                {
+                    userLocation.IsDeleted = true;
+                    userLocation.UpdatedBy = "Test";
+                    userLocation.UpdatedByTimeStamp = DateTime.Now.ToString();
+                    dbContext.Update(userLocation);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<Models.Domains.User> LoginUser(LoginUser loginUser)
+        {
+            var data = await dbContext.Users.FirstOrDefaultAsync(c => (c.Email == loginUser.Email || c.MobileNumber == loginUser.MobileNumber) 
+                                                                && c.Password == loginUser.Password && !c.IsDeleted);
+            if(data != null)
+            {
+                return data;
+            }
+            return data;
+        }
+
+        public async Task<Models.Domains.User> Resetpassword(LoginUser loginUser)
+        {
+            var result =await dbContext.Users.FirstOrDefaultAsync(c => (c.Email == loginUser.Email || c.MobileNumber == loginUser.MobileNumber)
+                                                                && !c.IsDeleted);
+            if(result != null)
+            {
+                result.Password = loginUser.Password;
+                dbContext.Update(result);
+                await dbContext.SaveChangesAsync();
+            }
+            return result;
         }
     }
 }
