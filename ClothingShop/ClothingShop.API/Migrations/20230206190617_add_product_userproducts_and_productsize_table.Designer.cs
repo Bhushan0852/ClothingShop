@@ -4,6 +4,7 @@ using ClothingShop.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClothingShop.API.Migrations
 {
     [DbContext(typeof(ClothingShopDbContext))]
-    partial class ClothingShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230206190617_add_product_userproducts_and_productsize_table")]
+    partial class addproductuserproductsandproductsizetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

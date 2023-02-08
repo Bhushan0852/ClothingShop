@@ -1,5 +1,7 @@
 using ClothingShop.API.Data;
+using ClothingShop.API.Repository.IEFRepository.Product;
 using ClothingShop.API.Repository.IEFRepository.User;
+using ClothingShop.API.Repository.Repository.Product;
 using ClothingShop.API.Repository.Repository.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,7 @@ builder.Services.AddDbContext<ClothingShopDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ClothingShop_Demo1"));
 });
 builder.Services.AddScoped<IEFUserRepository, EFUserRepository>();
+builder.Services.AddScoped<IEFProductRepository, EFProductRepository>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 var app = builder.Build();
 
