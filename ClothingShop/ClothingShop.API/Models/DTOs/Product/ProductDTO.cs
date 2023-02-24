@@ -1,6 +1,6 @@
-﻿namespace ClothingShop.API.Models.Domains
+﻿namespace ClothingShop.API.Models.DTOs
 {
-    public class ProductDTO
+    public class SearchProductDTO
     {
         public Guid Id { get; set; }
         public string ProductName { get; set; }

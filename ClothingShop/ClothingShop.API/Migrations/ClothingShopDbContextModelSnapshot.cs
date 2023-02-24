@@ -39,16 +39,32 @@ namespace ClothingShop.API.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProductDescription")
+                    b.Property<Guid>("ProductBrandId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductColourId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductDitails")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductName")
+                    b.Property<int>("ProductPrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductQty")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProductSizeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("ProductPrice")
-                        .HasColumnType("float");
+                    b.Property<string>("SKUCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
@@ -60,7 +76,147 @@ namespace ClothingShop.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductBrandId");
+
+                    b.HasIndex("ProductColourId");
+
+                    b.HasIndex("ProductSizeId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ClothingShop.API.Models.Domains.ProductBrands", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BrandCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BrandName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedByTimeStamp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedByTimeStamp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductBrands");
+                });
+
+            modelBuilder.Entity("ClothingShop.API.Models.Domains.ProductColour", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedByTimeStamp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProductColourCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductColourName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductColourSort")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedByTimeStamp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductColours");
+                });
+
+            modelBuilder.Entity("ClothingShop.API.Models.Domains.ProductImages", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedByTimeStamp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedByTimeStamp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("ClothingShop.API.Models.Domains.ProductSize", b =>
@@ -80,11 +236,15 @@ namespace ClothingShop.API.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProductSizeCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ProductSizeDesp")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductSort")
+                    b.Property<int>("ProductSizeSort")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -236,9 +396,6 @@ namespace ClothingShop.API.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProductSizeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -253,8 +410,6 @@ namespace ClothingShop.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductSizeId");
 
                     b.HasIndex("UserId");
 
@@ -295,6 +450,44 @@ namespace ClothingShop.API.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("ClothingShop.API.Models.Domains.Product", b =>
+                {
+                    b.HasOne("ClothingShop.API.Models.Domains.ProductBrands", "ProductBrand")
+                        .WithMany()
+                        .HasForeignKey("ProductBrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClothingShop.API.Models.Domains.ProductColour", "ProductColour")
+                        .WithMany()
+                        .HasForeignKey("ProductColourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClothingShop.API.Models.Domains.ProductSize", "ProductSize")
+                        .WithMany()
+                        .HasForeignKey("ProductSizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductBrand");
+
+                    b.Navigation("ProductColour");
+
+                    b.Navigation("ProductSize");
+                });
+
+            modelBuilder.Entity("ClothingShop.API.Models.Domains.ProductImages", b =>
+                {
+                    b.HasOne("ClothingShop.API.Models.Domains.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ClothingShop.API.Models.Domains.User", b =>
                 {
                     b.HasOne("ClothingShop.API.Models.Domains.UserRole", "UserRole")
@@ -325,12 +518,6 @@ namespace ClothingShop.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClothingShop.API.Models.Domains.ProductSize", "ProductSize")
-                        .WithMany()
-                        .HasForeignKey("ProductSizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ClothingShop.API.Models.Domains.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -339,9 +526,12 @@ namespace ClothingShop.API.Migrations
 
                     b.Navigation("Product");
 
-                    b.Navigation("ProductSize");
-
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ClothingShop.API.Models.Domains.Product", b =>
+                {
+                    b.Navigation("ProductImages");
                 });
 
             modelBuilder.Entity("ClothingShop.API.Models.Domains.User", b =>

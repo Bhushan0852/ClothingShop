@@ -10,7 +10,5 @@
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
 
-        public Guid ProductSizeId{ get; set; }
-        public ProductSize ProductSize{ get; set; }
     }
 }

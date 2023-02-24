@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClothingShop.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/product")]
     public class ProductController : Controller
     {
         private readonly IEFProductRepository productRepository;
@@ -13,7 +13,7 @@ namespace ClothingShop.API.Controllers
         {
             this.productRepository = productRepository;
         }
-        [HttpGet("Get-product-list")]
+        [HttpGet("get-product-list")]
         public IActionResult GetAll()
         {
             var data = productRepository.GetAll();
@@ -22,6 +22,23 @@ namespace ClothingShop.API.Controllers
                 return NotFound();
             }
             return Ok(data);
+        }
+
+        [HttpPost("search-product-list")]
+        public IActionResult SerachProduct(Models.DTOs.SearchProductDTO searchProduct)
+        {
+            var data = productRepository.SearchProduct(searchProduct);  
+            if(data.Result == null)
+            {
+                return NotFound();
+            }
+            return Ok(data.Result);
+        }
+
+        [HttpPost("create-product")]
+        public IActionResult CreateProduct()
+        {
+            return Ok();
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClothingShop.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/login")]
     public class LoginController : Controller
     {
         private readonly IEFUserRepository userRepository;
@@ -36,7 +36,7 @@ namespace ClothingShop.API.Controllers
         //    return Ok(data);
         //}
 
-        [HttpPost("create_user")]
+        [HttpPost("create-user")]
         public async Task<IActionResult> CreateNewUser(Models.DTOs.User.CreateUserDTO createUser)
         {
             var data = await userRepository.CreateAsync(createUser);
@@ -104,7 +104,7 @@ namespace ClothingShop.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("reset_user_password")]
+        [HttpPut("reset-password")]
         public async Task<IActionResult> ResetPassword(Models.DTOs.User.LoginUser loginUser)
         {
             var result = await userRepository.Resetpassword(loginUser);

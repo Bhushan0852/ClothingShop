@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ClothingShopDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ClothingShop_Demo1"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ClothingShop_Demo2"));
 });
 builder.Services.AddScoped<IEFUserRepository, EFUserRepository>();
 builder.Services.AddScoped<IEFProductRepository, EFProductRepository>();

@@ -1,23 +1,15 @@
-﻿namespace ClothingShop.API.Models.Domains
+﻿namespace ClothingShop.API.Models.DTOs
 {
-    public class Product : AuditEntity
+    public class CreateProductDTO
     {
-        public Guid Id { get; set; }
         public string SKUCode { get; set; }
         public string ProductTitle { get; set; }
         public string ProductDitails { get; set; }
         public int ProductPrice { get; set; }
         public int ProductQty { get; set; }
-
         public Guid ProductBrandId { get; set; }
-        public ProductBrands ProductBrand { get; set; }
-
         public Guid ProductSizeId { get; set; }
-        public ProductSize ProductSize { get; set; }
-
         public Guid ProductColourId { get; set; }
-        public ProductColour ProductColour{ get; set; }
-
-        public IEnumerable<ProductImages> ProductImages{ get; set; }
+        public IEnumerable<CreateProductImagesDTO> ProductImages{ get; set; }
     }
 }
