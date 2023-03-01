@@ -1,4 +1,6 @@
 using ClothingShop.API.Data;
+using ClothingShop.API.EFRepository.Category;
+using ClothingShop.API.IEFRepository.Category;
 using ClothingShop.API.Repository.IEFRepository.Product;
 using ClothingShop.API.Repository.IEFRepository.User;
 using ClothingShop.API.Repository.Repository.Product;
@@ -20,6 +22,7 @@ builder.Services.AddDbContext<ClothingShopDbContext>(options =>
 });
 builder.Services.AddScoped<IEFUserRepository, EFUserRepository>();
 builder.Services.AddScoped<IEFProductRepository, EFProductRepository>();
+builder.Services.AddScoped<IEFCategoryRepository, EFCategoryRepository>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 var app = builder.Build();
 

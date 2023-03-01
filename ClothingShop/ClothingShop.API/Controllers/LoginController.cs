@@ -16,13 +16,16 @@ namespace ClothingShop.API.Controllers
             this.userRepository = userRepository;
             this.mapper = mapper;
         }
-        //[HttpGet("get-all-users")]
-        //public IActionResult GetAllUsers()
-        //{
-        //    var users = userRepository.GetAllAsnyc();
-        //    var data = mapper.Map<List<Models.DTOs.User.UserDTO>>(users.Result);
-        //    return Ok(data);
-        //}
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("get-all-users")]
+        public IActionResult GetAllUsers()
+        {
+            var users = userRepository.GetAllAsnyc();
+            var data = mapper.Map<List<Models.DTOs.User.UserDTO>>(users.Result);
+            return Ok(data);
+        }
 
         //[HttpGet("get-userlocation-byuser-id")]
         //public async Task<IActionResult> GetUserandUserLocationsByUserId(Guid guid)
@@ -36,6 +39,8 @@ namespace ClothingShop.API.Controllers
         //    return Ok(data);
         //}
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("create-user")]
         public async Task<IActionResult> CreateNewUser(Models.DTOs.User.CreateUserDTO createUser)
         {
@@ -93,6 +98,9 @@ namespace ClothingShop.API.Controllers
         //    }
         //    return Ok("User Deleted sucessfully");
         //}
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("get-user-login")]
         public async Task<IActionResult> GetLoginUser(Models.DTOs.User.LoginUser loginUser)
         {
@@ -104,6 +112,8 @@ namespace ClothingShop.API.Controllers
             return Ok(result);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("reset-password")]
         public async Task<IActionResult> ResetPassword(Models.DTOs.User.LoginUser loginUser)
         {
@@ -113,6 +123,20 @@ namespace ClothingShop.API.Controllers
                 return BadRequest("Request Failed");
             }
             return Ok(result);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPut("update-user-location-from-cart-screen")]
+        public async Task<IActionResult> UpdateUserLocationFromCart(Models.DTOs.User.UpdateUserLocationFromCartDTO updateUserLocation)
+        {
+            var response = await userRepository.UpdateUserLocationFromCartAsync(updateUserLocation);
+            if (response == null)
+            {
+                return BadRequest("Request Failed");
+            }
+            //var Data = mapper.Map<Models.DTOs.User.UpdateUserLocationDTO>(responce);
+            return Ok(response);
         }
     }
 }

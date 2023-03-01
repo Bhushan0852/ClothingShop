@@ -28,5 +28,8 @@
 
         //delete userlocation
         Task<bool> DeleteUserLoacationAsync(Guid guid);
+
+        //edit user location details from cart screen
+        Task<Models.Domains.UserLocations> UpdateUserLocationFromCartAsync(Models.DTOs.User.UpdateUserLocationFromCartDTO userLocationDTO);
     }
 }

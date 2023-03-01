@@ -4,6 +4,7 @@ using ClothingShop.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClothingShop.API.Migrations
 {
     [DbContext(typeof(ClothingShopDbContext))]
-    partial class ClothingShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230228161251_add_file_details_domain_added_on_dbset")]
+    partial class addfiledetailsdomainaddedondbset
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,10 +102,6 @@ namespace ClothingShop.API.Migrations
                     b.Property<string>("CreatedByTimeStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IncValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -137,10 +136,6 @@ namespace ClothingShop.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedByTimeStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VendorCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -464,13 +459,11 @@ namespace ClothingShop.API.Migrations
 
             modelBuilder.Entity("ClothingShop.API.Models.Domains.FileDetails", b =>
                 {
-                    b.HasOne("ClothingShop.API.Models.Domains.Product", "Product")
+                    b.HasOne("ClothingShop.API.Models.Domains.Product", null)
                         .WithMany("FileDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ClothingShop.API.Models.Domains.Product", b =>

@@ -195,5 +195,30 @@ namespace ClothingShop.API.Repository.Repository.User
             }
             return result;
         }
+
+
+        public async Task<Models.Domains.UserLocations> UpdateUserLocationFromCartAsync(Models.DTOs.User.UpdateUserLocationFromCartDTO userLocationDTO)
+        {
+            int count = 0;
+            var userLocations = await dbContext.UserLocations.FirstOrDefaultAsync(x => x.Id == userLocationDTO.Id);
+            if (userLocations != null)
+            {
+                userLocations.AddressLane1 = userLocationDTO.AddressLane1;
+                userLocations.AddressLane2 = "";
+                userLocations.AddressLane3 = "";
+                userLocations.PinCode = userLocationDTO.PinCode;
+                userLocations.City = "";
+                userLocations.State = "";
+                userLocations.IsPrimary = true;
+                dbContext.Update(userLocations);
+                count = await dbContext.SaveChangesAsync();
+            }
+            if (count > 0)
+            {
+                return userLocations;
+            }
+            return userLocations;
+        }
+
     }
 }

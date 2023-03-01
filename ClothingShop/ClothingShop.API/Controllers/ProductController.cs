@@ -13,21 +13,26 @@ namespace ClothingShop.API.Controllers
         {
             this.productRepository = productRepository;
         }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("get-product-list")]
         public IActionResult GetAll()
         {
-            var data = productRepository.GetAll();
+            var data = productRepository.GetAllAsync();
             if (data == null)
             {
                 return NotFound();
             }
-            return Ok(data);
+            return Ok(data.Result.ToList());
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("search-product-list")]
-        public IActionResult SerachProduct(Models.DTOs.SearchProductDTO searchProduct)
+        public IActionResult SearchSkuProducts(string skuName)
         {
-            var data = productRepository.SearchProduct(searchProduct);  
+            var data = productRepository.SearchSkuProducts(skuName);  
             if(data.Result == null)
             {
                 return NotFound();
@@ -35,10 +40,70 @@ namespace ClothingShop.API.Controllers
             return Ok(data.Result);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("create-product")]
-        public IActionResult CreateProduct()
+        public IActionResult CreateProduct([FromForm]Models.DTOs.CreateProductDTO createProductDTO, List<IFormFile> fileData)
         {
-            return Ok();
+            var data = productRepository.CreateProduct(createProductDTO, fileData);
+            if (data.Result == null)
+            {
+                return NotFound();
+            }
+            return Ok(data.Result);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("get-product-preview-detail")]
+        public IActionResult GetProductPreview(Guid guid)
+        {
+            var data = productRepository.GetProductPreview(guid);
+            if (data.Result == null)
+            {
+                return NotFound();
+            }
+            return Ok(data.Result);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("get-product-detail")]
+        public IActionResult GetProductDetail(Guid guid)
+        {
+            var data = productRepository.GetProductDetail(guid);
+            if (data.Result == null)
+            {
+                return NotFound();
+            }
+            return Ok(data.Result);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpDelete("remove-product-data")]
+        public IActionResult RemoveProduct(Guid guid)
+        {
+          var data = productRepository.RemoveProduct(guid);
+            if (data.Result == null)
+            {
+                return NotFound();
+            }
+            return Ok(data.Result);
+        }
+
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPut("update-product")]
+        public IActionResult UpdateProduct(Models.DTOs.UpdateProductDTO updateProduct)
+        {
+            var data = productRepository.UpdateProduct(updateProduct);
+            if (data.Result == null)
+            {
+                return NotFound();
+            }
+            return Ok(data.Result);
         }
     }
 }

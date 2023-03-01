@@ -19,5 +19,8 @@ namespace ClothingShop.API.Data
         public DbSet<ProductColour> ProductColours{ get; set; }
         public DbSet<ProductImages> ProductImages{ get; set; }
         public DbSet<UserProducts> UserProducts{ get; set; }
+
+        public DbSet<ImageModel> Images { get; set; }
+        public DbSet<FileDetails> FileDetails{ get; set; }
     }
 }
