@@ -17,8 +17,9 @@ namespace ClothingShop.API.Repository.Repository.Product
             this.webHost = webHost;
         }
 
-        public async Task<Models.Domains.Product> CreateProduct(CreateProductDTO createProductDTO, List<IFormFile> fileData)
+        public async Task<bool> CreateProduct(CreateProductDTO createProductDTO, List<IFormFile> fileData)
         {
+            var prodId = 0;
             var pBrand = dbContext.ProductBrands.FirstOrDefault(x => x.Id == createProductDTO.ProductBrandId);
             var prod = dbContext.Products.Where(z => !z.IsDeleted && z.ProductBrandId == createProductDTO.ProductBrandId).ToList();
             List<int> incValue = new();
@@ -46,7 +47,7 @@ namespace ClothingShop.API.Repository.Repository.Product
             product.CreatedByTimeStamp = DateTime.Now.ToString();
             product.UpdatedByTimeStamp = "";
             await dbContext.Products.AddAsync(product);
-            var prodId = await dbContext.SaveChangesAsync();
+            prodId = await dbContext.SaveChangesAsync();
 
             var Products = dbContext.Products.FirstOrDefault(x => x.SKUCode == product.SKUCode);
             if (fileData != null)
@@ -88,8 +89,11 @@ namespace ClothingShop.API.Repository.Repository.Product
                     }
                 }
             }
-
-            return product;
+            if(prodId > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task CopyStream(Stream stream, string downloadPath)
@@ -214,6 +218,88 @@ namespace ClothingShop.API.Repository.Repository.Product
             await dbContext.SaveChangesAsync();
 
             return product;
+        }
+
+        public async Task<bool> UserAddedProduct(Guid userId, Guid productId,int Qty)
+        {
+            bool result = false;
+            int count = 0;
+            for (int i = 0; i < Qty; count++)
+            {
+                Models.Domains.UserProducts userProducts = new Models.Domains.UserProducts();
+                userProducts.UserId = userId;
+                userProducts.ProductId = productId;
+                userProducts.IsDeleted = false;
+                userProducts.CreatedBy = "test";
+                userProducts.CreatedByTimeStamp = DateTime.Now.ToString();
+                await dbContext.UserProducts.AddAsync(userProducts);
+                count = await dbContext.SaveChangesAsync();
+
+                i++;
+                //if (count > 0)
+                //{
+                //    count++;
+                //}
+            }
+            if(count > 0)
+            {
+                result = true;  
+            }
+            return result;
+        }
+
+        public async Task<bool> RemoveUserAddedProduct(Guid userId, Guid productId)
+        {
+            bool result = false;
+            int count = 0;
+
+            var cartItems = dbContext.UserProducts.Where(x => !x.IsDeleted && x.ProductId == productId && x.UserId == userId).ToList();
+            foreach (var item in cartItems)
+            {
+                Models.Domains.UserProducts userProducts = new Models.Domains.UserProducts();
+                item.IsDeleted = true;
+                item.UpdatedBy = "test";
+                item.UpdatedByTimeStamp = DateTime.Now.ToString();
+                dbContext.UserProducts.Update(item);
+                count = await dbContext.SaveChangesAsync();
+                if (count > 0)
+                {
+                    count = count + 1;
+                }
+            }
+            if (count > 0)
+            {
+                result = true;
+            }
+            return result;
+        }
+
+
+        public async Task<bool> PlaceOrder(Guid userId, Guid productId)
+        {
+            bool result = false;
+            int count = 0;
+
+            var cartItems = dbContext.UserProducts.Where(x => !x.IsDeleted && x.ProductId == productId && x.UserId == userId).ToList();
+            foreach (var item in cartItems)
+            {
+                Models.Domains.UserProducts userProducts = new Models.Domains.UserProducts();
+                item.OrderStatus = true;
+                item.OutForDelivery = true;
+                item.UpdatedBy = "test";
+                item.UpdatedByTimeStamp = DateTime.Now.ToString();
+                dbContext.UserProducts.Update(item);
+                count = await dbContext.SaveChangesAsync();
+                if (count > 0)
+                {
+                    count = count + 1;
+                }
+            }
+            if (count > 0)
+            {
+                result = true;
+            }
+            return result;
         }
     }
 }

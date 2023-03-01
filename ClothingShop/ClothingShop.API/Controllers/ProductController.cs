@@ -1,4 +1,5 @@
-﻿using ClothingShop.API.Repository.IEFRepository.Product;
+﻿using AutoMapper;
+using ClothingShop.API.Repository.IEFRepository.Product;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClothingShop.API.Controllers
@@ -8,10 +9,12 @@ namespace ClothingShop.API.Controllers
     public class ProductController : Controller
     {
         private readonly IEFProductRepository productRepository;
+        private readonly IMapper mapper;
 
-        public ProductController(IEFProductRepository productRepository)
+        public ProductController(IEFProductRepository productRepository , IMapper mapper)
         {
             this.productRepository = productRepository;
+            this.mapper = mapper;
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -24,21 +27,11 @@ namespace ClothingShop.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(data.Result.ToList());
+            var data1 = mapper.Map<List<Models.DTOs.ProductListDTO>>(data.Result);
+            return Ok(data1);
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("search-product-list")]
-        public IActionResult SearchSkuProducts(string skuName)
-        {
-            var data = productRepository.SearchSkuProducts(skuName);  
-            if(data.Result == null)
-            {
-                return NotFound();
-            }
-            return Ok(data.Result);
-        }
+        
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,7 +56,8 @@ namespace ClothingShop.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(data.Result);
+            var data1 = mapper.Map<Models.DTOs.ProductListDTO>(data.Result);
+            return Ok(data1);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -76,7 +70,8 @@ namespace ClothingShop.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(data.Result);
+            var data1 = mapper.Map<Models.DTOs.ProductListDTO>(data.Result);
+            return Ok(data1);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -99,6 +94,19 @@ namespace ClothingShop.API.Controllers
         public IActionResult UpdateProduct(Models.DTOs.UpdateProductDTO updateProduct)
         {
             var data = productRepository.UpdateProduct(updateProduct);
+            if (data.Result == null)
+            {
+                return NotFound();
+            }
+            return Ok(data.Result);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("search-product-list")]
+        public IActionResult SearchSkuProducts(string skuName)
+        {
+            var data = productRepository.SearchSkuProducts(skuName);
             if (data.Result == null)
             {
                 return NotFound();

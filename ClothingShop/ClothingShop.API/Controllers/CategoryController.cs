@@ -17,20 +17,6 @@ namespace ClothingShop.API.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet("get-product-by-search-string")]
-        public IActionResult GetProductsbySearch(string searchString)
-        {
-            var data = categoryRepository.GetProductsbySearch(searchString);
-            if (data == null)
-            {
-                return NotFound();
-            }
-            return Ok(data.Result.ToList());
-        }
-
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("get-product-list")]
         public IActionResult GetProductList(Models.DTOs.Category.SearchCategory searchCategory)
         {
@@ -55,6 +41,19 @@ namespace ClothingShop.API.Controllers
                 return NotFound();
             }
             return Ok(data.Result);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("get-product-by-search-string")]
+        public IActionResult GetProductsbySearch(string searchString)
+        {
+            var data = categoryRepository.GetProductsbySearch(searchString);
+            if (data == null)
+            {
+                return NotFound();
+            }
+            return Ok(data.Result.ToList());
         }
     }
 }

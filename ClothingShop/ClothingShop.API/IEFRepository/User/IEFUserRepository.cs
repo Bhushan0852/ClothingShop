@@ -31,5 +31,6 @@
 
         //edit user location details from cart screen
         Task<Models.Domains.UserLocations> UpdateUserLocationFromCartAsync(Models.DTOs.User.UpdateUserLocationFromCartDTO userLocationDTO);
+
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using ClothingShop.API.Repository.IEFRepository.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClothingShop.API.Controllers
 {
+    //[Authorize]
     [ApiController]
     [Route("api/login")]
     public class LoginController : Controller
@@ -101,15 +103,16 @@ namespace ClothingShop.API.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("get-user-login")]
-        public async Task<IActionResult> GetLoginUser(Models.DTOs.User.LoginUser loginUser)
+        [HttpGet("get-user-login")]
+        public IActionResult GetLoginUser(Models.DTOs.User.LoginUser loginUser)
         {
-            var result =await userRepository.LoginUser(loginUser);
+            var result = userRepository.LoginUser(loginUser);
             if(result == null)
             {
                 return BadRequest("Request Failed");
             }
-            return Ok(result);
+            var data = mapper.Map<Models.DTOs.User.UserDTO>(result);
+            return Ok(data);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

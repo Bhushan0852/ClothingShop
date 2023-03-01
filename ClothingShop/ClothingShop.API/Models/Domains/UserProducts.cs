@@ -10,5 +10,10 @@
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
 
+        public bool OutForDelivery { get; set; } = false;
+        public bool OrderStatus { get; set; } = false;
+        public bool IsCanceled { get; set; } = false;
+
+
     }
 }

@@ -6,7 +6,7 @@ namespace ClothingShop.API.Profiles
     {
         public Product()
         {
-            //CreateMap<Models.Domains.Product, Models.DTOs.ProductDTO>().ReverseMap();
+            CreateMap<Models.Domains.Product, Models.DTOs.ProductListDTO>().ReverseMap();
         }
     }
 }

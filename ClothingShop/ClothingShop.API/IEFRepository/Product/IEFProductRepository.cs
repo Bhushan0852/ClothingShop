@@ -9,7 +9,7 @@
         Task<Models.Domains.Product> SearchSkuProducts(string skuName);
 
         //create product
-        Task<Models.Domains.Product> CreateProduct(Models.DTOs.CreateProductDTO createProductDTO, List<IFormFile> fileData);
+        Task<bool> CreateProduct(Models.DTOs.CreateProductDTO createProductDTO, List<IFormFile> fileData);
 
         //product preview for customer and vendor
         Task<Models.Domains.Product> GetProductPreview(Guid guid);
@@ -25,5 +25,14 @@
 
         //create clone product
         Task<Models.Domains.Product> CreateCloneProduct(Models.DTOs.CreateProductDTO createProductDTO);
+
+        //User added Product
+        Task<bool> UserAddedProduct(Guid userId, Guid productId, int Qty);
+
+        //Remove User added Product
+        Task<bool> RemoveUserAddedProduct(Guid userId, Guid productId);
+
+        //Placed order
+        Task<bool> PlaceOrder(Guid userId, Guid productId);
     }
 }
